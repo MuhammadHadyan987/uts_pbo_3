@@ -11,8 +11,8 @@ class ExampleController extends Controller
     private const SESSION_KEY = 'inventaris_lab';
 
     /**
-     * Data awal hanya dipakai saat session pengguna belum memiliki data inventaris.
-     * Seluruh perubahan berikutnya disimpan pada session, bukan database.
+     * data awal dipakai saat pengguna belum memiliki data inventaris
+     * seluruh perubahan disimpan pada session dan bukan database
      */
     private const SAMPLE_DATA = [
         [
@@ -53,7 +53,7 @@ class ExampleController extends Controller
         ],
     ];
 
-    /** Menampilkan seluruh inventaris dan menyediakan pencarian sederhana. */
+    /** menampilkan inventaris dan pencarian sederhana. */
     public function index(Request $request): View
     {
         $items = $this->allItems();
@@ -84,13 +84,13 @@ class ExampleController extends Controller
         ]);
     }
 
-    /** Menampilkan form penambahan data inventaris. */
+    /** menampilkan form penambahan data. */
     public function create(): View
     {
         return view('examples.create');
     }
 
-    /** Memvalidasi dan menyimpan data baru ke dalam session. */
+    /** memvalidasi dan menyimpan data baru. */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate($this->rules());
@@ -111,19 +111,19 @@ class ExampleController extends Controller
         return redirect()->route('example.index')->with('success', 'Data inventaris berhasil ditambahkan.');
     }
 
-    /** Menampilkan detail satu barang berdasarkan kode inventaris. */
+    /** menampilkan detail satu barang berdasarkan kode inventaris. */
     public function show(string $kode): View
     {
         return view('examples.show', ['example' => $this->findItem($kode)]);
     }
 
-    /** Menampilkan form edit dengan nilai awal dari session. */
+    /** menampilkan form edit dengan nilai awal */
     public function edit(string $kode): View
     {
         return view('examples.edit', ['example' => $this->findItem($kode)]);
     }
 
-    /** Memperbarui data inventaris yang cocok dengan kode pada URI. */
+    /** mmperbarui data inventaris yang cocok dengan kode pada URI */
     public function update(Request $request, string $kode): RedirectResponse
     {
         $validated = $request->validate($this->rules(includeCode: false));
@@ -142,7 +142,7 @@ class ExampleController extends Controller
         return redirect()->route('example.index')->with('success', 'Data inventaris berhasil diperbarui.');
     }
 
-    /** Menghapus data inventaris berdasarkan kode. */
+    /** mnghapus data inventaris */
     public function destroy(string $kode): RedirectResponse
     {
         $items = $this->allItems();
@@ -158,7 +158,7 @@ class ExampleController extends Controller
         return redirect()->route('example.index')->with('success', 'Data inventaris berhasil dihapus.');
     }
 
-    /** Mengambil data session; data contoh diinisialisasi satu kali per session. */
+    /** mngambil data session*/
     private function allItems(): array
     {
         if (! session()->has(self::SESSION_KEY)) {
@@ -168,7 +168,7 @@ class ExampleController extends Controller
         return session()->get(self::SESSION_KEY, []);
     }
 
-    /** Mencari satu data atau menghentikan request dengan HTTP 404. */
+    /** mncari satu data atau menghentikan request */
     private function findItem(string $kode): array
     {
         $items = $this->allItems();
@@ -181,7 +181,7 @@ class ExampleController extends Controller
         return $items[$position];
     }
 
-    /** Mendapatkan posisi array berdasarkan kode tanpa mengubah kode yang tersimpan. */
+    /** mndapatkan posisi array berdasarkan kode */
     private function findPosition(array $items, string $kode): ?int
     {
         foreach ($items as $position => $item) {
@@ -193,7 +193,7 @@ class ExampleController extends Controller
         return null;
     }
 
-    /** Aturan validasi untuk data inventaris. */
+    /** auran validasi untuk data*/
     private function rules(bool $includeCode = true): array
     {
         $rules = [
